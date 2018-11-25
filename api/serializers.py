@@ -30,7 +30,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Profile
-		fields = ['name', 'dob', 'email', 'profile_pic']
+		fields = ['name', 'dob', 'email', 'profile_pic', 'number']
 
 	def get_email(self, obj):
 		return (obj.user.email)
@@ -38,7 +38,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 	def get_name(self, obj):
 		return "%s %s"%(obj.user.first_name, obj.user.last_name)
 		
-
+#------------------------------------------------------#
 
 class ProductListSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -46,8 +46,11 @@ class ProductListSerializer(serializers.ModelSerializer):
 		fields = ['id',
 		'name',
 		'price',
+		'category',
 		'img',
 			]
+
+
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
@@ -57,8 +60,11 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 		'name',
 		'price',
 		'description',
+		'category',
 		'img', 'quantity'
 			]
+
+#------------------------------------------------------#
 
 class OrderProductSerializer(serializers.ModelSerializer):
 	name = serializers.SerializerMethodField()
@@ -72,7 +78,68 @@ class OrderSerializer(serializers.ModelSerializer):
 	# status = OrderStatusListSerializer()
 	class Meta:
 		model = Order
-		fields = ['id','ordered_by' ]
+		fields = ['id', 'ordered_by', 'ordered_on', 'status', 'address']
+
+
+
+
+
+class OrderCreateUpdateSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = Order
+		fields = ['id','ordered_on', 'product','status', 'ordered_by',]
+
+class OrderListSerializer(serializers.ModelSerializer):
+	#products = serializers.SerializerMethodField()
+
+	class Meta:
+		model = Order
+		fields = ['id', 'ordered_on', 'status', 'address']
+
+	# def get_products(self, obj):
+	# 	products = obj.orderProduct_set.all()
+	# 	return OrderProductSerializer(products, many=True).data
+
+
+
+class AddressSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Address
+		fields = ['id', 'user', 'governorate', 'area', 'block', 'street', 'building_or_house', 'floor', 'extra_directions']
+
+		
+class OrderDetailSerializer(serializers.ModelSerializer):
+	# products=serializers.SerializerMethodField()
+	order_product= OrderProductSerializer(many=True, read_only=True)
+	address= AddressSerializer(read_only=True)
+	# print(order_product)
+	class Meta:
+		model = Order
+		fields = ['id', 'ordered_by', 'ordered_on', 'status', 'address','order_product' ]
+
+	# def get_products(self, obj):
+	# 	products = OrderProduct.objects.filter(order=obj)
+	# 	# print(products)
+	# 	product_list=[]
+	# 	for product in products:
+			
+	# 		product_list.append(OrderProductSerializer(product, many=True).data)
+	# 	# return OrderProductSerializer(products, many=True).data
+	# 	print(product_list)
+	# 	return product_list
+
+#------------------------------------------------------#
+
+
+
+# class AddressCreateUpdateSerializer(serializers.ModelSerializer):
+# 	class Meta:
+# 		model = Address
+# 		fields = ['id', 'user', 'governorate', 'area', 'block', 'street', 'building_or_house', 'floor', 'extra_directions']
+
+
+
 #dashboard----------------------
 # class UserListSerializer(serializers.ModelSerializer):
 # 	profile = ProfileSerializer()
@@ -91,12 +158,6 @@ class OrderSerializer(serializers.ModelSerializer):
 # 		products = obj.product_set.all()
 # 		return ProductListSerializer(products, many=True).data
 
-class OrderCreateUpdateSerializer(serializers.ModelSerializer):
-
-	class Meta:
-		model = Order
-		fields = ['id','ordered_on','updated_on','price', 'product','status', 'ordered_by', 'updated_by','orderNumber']
-
 # class OrderStatusListSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = OrderStatus
@@ -112,32 +173,5 @@ class OrderCreateUpdateSerializer(serializers.ModelSerializer):
 #         model = OrderNumber
 #         fields = '__all__'
 
-class UserOrderListSerializer(serializers.ModelSerializer):
-	# status = OrderStatusListSerializer()
-	class Meta:
-		model = Order
-		fields = ['id','ordered_on','status' ]
 
-class OrderListSerializer(serializers.ModelSerializer):
-	# ordered_by = UserListSerializer()
-	# status = OrderStatusListSerializer()
-	products = serializers.SerializerMethodField()
-	# orderNumber = OrderNumberListSerializer(many=True)
 
-	class Meta:
-		model = Order
-		fields = ['id','ordered_on','updated_on','status','products','price', 'ordered_by', 'orderNumber' ]
-
-	def get_products(self, obj):
-		products = obj.orderProduct_set.all()
-		return UserOrderSerializer(products, many=True).data
-
-class UserOrderDetailSerializer(serializers.ModelSerializer):
-	product=serializers.SerializerMethodField()
-	class Meta:
-		model = Order
-		fields = ['id','ordered_on','updated_on','price','status', 'ordered_by', 'updated_by','orderNumber' ]
-
-	def get_products(self, obj):
-		products = obj.orderProduct_set.all()
-		return UserOrderSerializer(products, many=True).data

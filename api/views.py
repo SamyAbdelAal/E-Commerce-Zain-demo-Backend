@@ -35,15 +35,6 @@ class ProductDetailView(RetrieveAPIView):
 	lookup_field = 'id'
 	lookup_url_kwarg = 'product_id'
 	permission_classes = [AllowAny,]
-#------------------------------------------------------#
-class ProductCreateView(CreateAPIView):
-	serializer_class = ProductListSerializer
-
-class ProductDeleteView(DestroyAPIView):
-	queryset = Product.objects.all()
-	serializer_class = ProductListSerializer
-	lookup_field = 'id'
-	lookup_url_kwarg = 'product_id'
 
 #------------------------------------------------------#
 
@@ -57,6 +48,72 @@ class ProfileView(RetrieveAPIView):
 	lookup_url_kwarg = 'user_id'
 	permission_classes = [IsUser, ]
 #------------------------------------------------------#Not needed now
+
+
+class OrderCreateView(APIView):
+
+	def post(self, request):
+		new_order=Order.objects.create(
+			ordered_by =request.user,
+			ordered_on= datetime.now()
+		)
+		
+		products=request.data["cart"]
+		print(request.data)
+		for product in products:
+			the_product = Product.objects.get(id=product["id"])
+			new_order_product=OrderProduct(product=the_product, quantity=product["quantity"])
+			the_product.quantity=the_product.quantity-new_order_product.quantity
+			print(the_product.quantity)
+			the_product.save()
+			new_order_product.order=new_order
+			new_order_product.save()
+
+		address=request.data["address"]
+		the_address=Address.objects.get(id=int(address))
+		new_order.address= the_address
+
+		new_order.save()
+		return Response(OrderSerializer(new_order).data)
+
+		# serializer.save(user=self.request.user)
+
+class OrderListView(ListAPIView):
+	queryset = Order.objects.all()
+	serializer_class = OrderListSerializer
+
+
+class OrderDetailView(RetrieveAPIView):
+	queryset = Order.objects.all()
+	serializer_class = OrderDetailSerializer
+	lookup_field = 'id'
+	lookup_url_kwarg = 'order_id'
+
+class OrderUpdateView(RetrieveUpdateAPIView):
+	queryset = Order.objects.all()
+	serializer_class = OrderCreateUpdateSerializer
+	lookup_field = 'id'
+	lookup_url_kwarg = 'order_id'
+
+
+
+
+#------------------------------------------------------#
+
+class AddressListView(ListAPIView):
+	queryset = Address.objects.all()
+	serializer_class = AddressSerializer
+	permission_classes = [IsAuthenticated]
+
+class AddressCreateView(CreateAPIView):
+	serializer_class = AddressSerializer
+	permission_classes = [IsAuthenticated]
+
+	def perform_create(self,serializer):
+		serializer.save(user=self.request.user)
+
+
+#------------------------------------------------------#commented
 
 # class ProfileUpdateView(RetrieveUpdateAPIView):
 #     queryset = Profile.objects.all()
@@ -76,55 +133,25 @@ class ProfileView(RetrieveAPIView):
 #     queryset = OrderStatus.objects.all()
 #     serializer_class = OrderStatusListSerializer
 
-class OrderDetailView(RetrieveAPIView):
-	queryset = Order.objects.all()
-	serializer_class = OrderListSerializer
-	lookup_field = 'id'
-	lookup_url_kwarg = 'order_id'
-
-class OrderCreateView(APIView):
-
-	def post(self, request):
-		new_order=Order.objects.create(
-			ordered_by =request.user,
-			ordered_on= "datetime.now()"
-		)
-		
-		products=request.data
-		print(request.data)
-		for product in products:
-			the_product = Product.objects.get(id=product["id"])
-			new_order_product=OrderProduct(product=the_product, quantity=product["quantity"])
-			new_order_product.order=new_order
-			new_order_product.save()
-
-		new_order.save()
-		return Response(OrderSerializer)
-
-		# serializer.save(user=self.request.user)
-
-class OrderUpdateView(RetrieveUpdateAPIView):
-	queryset = Order.objects.all()
-	serializer_class = OrderCreateUpdateSerializer
-	lookup_field = 'id'
-	lookup_url_kwarg = 'order_id'
-
-class OrderDeleteView(DestroyAPIView):
-	queryset = Order.objects.all()
-	serializer_class = OrderListSerializer
-	lookup_field = 'id'
-	lookup_url_kwarg = 'order_id'
-
 # class OrderTypeListView(ListAPIView):
 #     queryset = OrderType.objects.all()
 #     serializer_class = OrderTypeListSerializer
 
-class OrderListView(ListAPIView):
-	queryset = Order.objects.all()
-	serializer_class = OrderListSerializer
+# class OrderDeleteView(DestroyAPIView):
+# 	queryset = Order.objects.all()
+# 	serializer_class = OrderListSerializer
+# 	lookup_field = 'id'
+# 	lookup_url_kwarg = 'order_id'
 
+#------------------------------------------------------#
+# class ProductCreateView(CreateAPIView):
+# 	serializer_class = ProductListSerializer
 
-
+# class ProductDeleteView(DestroyAPIView):
+# 	queryset = Product.objects.all()
+# 	serializer_class = ProductListSerializer
+# 	lookup_field = 'id'
+# 	lookup_url_kwarg = 'product_id'
 
 
 

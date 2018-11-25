@@ -7,6 +7,7 @@ class Profile(models.Model):
 	user = models.OneToOneField(User, default=1, on_delete=models.CASCADE)
 	dob = models.DateField(null=True, blank=True)
 	profile_pic = models.ImageField(upload_to='profile_pic', null=True, blank=True)
+	number = models.CharField(max_length=8)
 	
 	def __str__(self):
 		return "ID:%s User:%s " % (self.id, self.user.username)
@@ -24,14 +25,72 @@ def save_user_profile(sender, instance, **kwargs):
 #------------------------------------------------------#
 
 class Product(models.Model):
+	CATEGORY_CHOICE = (
+		('F', 'FOOD'),
+		('D', 'DRINKS')
+		)
 	name = models.CharField(max_length=120)
 	description = models.TextField()
 	price = models.DecimalField(max_digits=10, decimal_places=3)
 	img = models.ImageField()
 	quantity = models.PositiveIntegerField(default=0)
+	category = models.CharField(max_length=1, default=0, choices=CATEGORY_CHOICE)
 
 	def __str__(self):
 		return self.name
+
+class Address(models.Model):
+	GOVERNORATE_CHOICE=(
+	('AA', 'Al Asimah'),
+	('H', 'Hawalli'),
+	('M', 'Mubarak Al-Kabeer'),
+	('A', 'Al-Ahmadi'),
+	('F', 'Farwaniya'),
+	('J', 'Al-Jahra'),
+	)
+
+	user = models.ForeignKey(User, default=1, related_name='address',  on_delete=models.CASCADE)
+	governorate = models.CharField(max_length=1, default=0, choices=GOVERNORATE_CHOICE)
+	area = models.CharField(max_length=120)
+	block = models.PositiveIntegerField(default=1)
+	street = models.CharField(max_length=120)
+	building_or_house = models.PositiveIntegerField(default=1)
+	floor = models.PositiveIntegerField(default=0, blank=True, null=True)
+	extra_directions = models.TextField(blank=True, null=True)
+
+	def __str__(self):
+		return self.user.username
+
+
+
+class Order(models.Model):
+	STATUS_CHOICE=(
+	('O', 'ORDERED'),
+	('P', 'PACKED'),
+	('S', 'SHIPPED'),
+	('D', 'DELIVERED')
+	)
+	# price = models.FloatField(default=0)
+	status = models.CharField(max_length=1, default=0, choices=STATUS_CHOICE)
+	#user = models.ForeignKey(Profile, default=1, related_name='order',  on_delete=models.CASCADE)
+	ordered_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orderedby")
+	ordered_on = models.DateTimeField(auto_now_add = True)
+	address = models.ForeignKey(Address,  on_delete=models.CASCADE, related_name="address")
+	#ordered_on = models.TextField()
+	# updated_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="updatedby")
+	# updated_on = models.DateTimeField(auto_now = True)
+	# order_number = models.ManyToManyField(OrderNumber, blank=True)
+	def __str__(self):
+		return self.ordered_by.username
+
+#------------------------------------------------------#
+
+class OrderProduct(models.Model):
+	product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='prod')
+	quantity = models.PositiveIntegerField(default=0)
+	order = models.ForeignKey(Order,related_name='order_product', on_delete=models.CASCADE)
+	def __str__(self):
+		return self.product.name
 
 
 #------------------------------------------------------#		
@@ -53,26 +112,6 @@ class Product(models.Model):
 
 # 	def __str__(self):
 # 		return self.number
-
-class Order(models.Model):
-	# status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
-	# price = models.FloatField(default=0)
-	ordered_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orderedby")
-	# updated_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="updatedby")
-	# ordered_on = models.DateTimeField(auto_now_add = True)
-	ordered_on = models.TextField()
-	# updated_on = models.DateTimeField(auto_now = True)
-	# order_number = models.ManyToManyField(OrderNumber, blank=True)
-	
-
-#------------------------------------------------------#
-
-class OrderProduct(models.Model):
-	product = models.ForeignKey(Product, on_delete=models.CASCADE)
-	quantity = models.PositiveIntegerField(default=0)
-	order = models.ForeignKey(Order, on_delete=models.CASCADE)
-	def __str__(self):
-		return self.product.name
 
 
 
