@@ -46,8 +46,24 @@ class ProfileView(RetrieveAPIView):
 	serializer_class = ProfileSerializer
 	lookup_field = 'id'
 	lookup_url_kwarg = 'user_id'
-	permission_classes = [IsUser, ]
-#------------------------------------------------------#Not needed now
+	permission_classes = [IsUser, IsAdminUser]
+
+class ProfileUpdateView(RetrieveUpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    lookup_field = 'id'
+    lookup_url_kwarg = 'profile_id'
+    permission_classes = [IsUser, IsAdminUser]
+
+class ProfileDeleteView(DestroyAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    lookup_field = 'id'
+    lookup_url_kwarg = 'profile_id'
+    permission_classes = [IsUser, IsAdminUser]
+
+
+#------------------------------------------------------#
 
 
 class OrderCreateView(APIView):
@@ -88,15 +104,21 @@ class OrderDetailView(RetrieveAPIView):
 	serializer_class = OrderDetailSerializer
 	lookup_field = 'id'
 	lookup_url_kwarg = 'order_id'
+	permission_classes = [IsUser, IsAdminUser]
 
 class OrderUpdateView(RetrieveUpdateAPIView):
 	queryset = Order.objects.all()
-	serializer_class = OrderCreateUpdateSerializer
+	serializer_class = OrderDetailSerializer
 	lookup_field = 'id'
 	lookup_url_kwarg = 'order_id'
+	permission_classes = [IsAdminUser]
 
-
-
+class OrderDeleteView(DestroyAPIView):
+	queryset = Order.objects.all()
+	serializer_class = OrderDetailSerializer
+	lookup_field = 'id'
+	lookup_url_kwarg = 'order_id'
+	permission_classes = [IsUser, IsAdminUser]
 
 #------------------------------------------------------#
 
@@ -112,30 +134,7 @@ class AddressCreateView(CreateAPIView):
 	def perform_create(self,serializer):
 		serializer.save(user=self.request.user)
 
-
 #------------------------------------------------------#commented
-
-# class ProfileUpdateView(RetrieveUpdateAPIView):
-#     queryset = Profile.objects.all()
-#     serializer_class = ProfileSerializer
-#     lookup_field = 'id'
-#     lookup_url_kwarg = 'profile_id'
-
-# class ProfileDeleteView(DestroyAPIView):
-#     queryset = Profile.objects.all()
-#     serializer_class = ProfileSerializer
-#     lookup_field = 'id'
-#     lookup_url_kwarg = 'profile_id'
-
-#------------------------------------------------------#commented
-
-# class OrderStatusListView(ListAPIView):
-#     queryset = OrderStatus.objects.all()
-#     serializer_class = OrderStatusListSerializer
-
-# class OrderTypeListView(ListAPIView):
-#     queryset = OrderType.objects.all()
-#     serializer_class = OrderTypeListSerializer
 
 # class OrderDeleteView(DestroyAPIView):
 # 	queryset = Order.objects.all()

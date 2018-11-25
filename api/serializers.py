@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import *
 
-
 class UserCreateSerializer(serializers.ModelSerializer):
 	password = serializers.CharField(write_only=True)
 	class Meta:
@@ -22,7 +21,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
 		new_user.set_password(validated_data['password'])
 		new_user.save()
 		return validated_data
-
 
 class ProfileSerializer(serializers.ModelSerializer):
 	email = serializers.SerializerMethodField()
@@ -50,9 +48,6 @@ class ProductListSerializer(serializers.ModelSerializer):
 		'img',
 			]
 
-
-
-
 class ProductDetailSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Product
@@ -75,48 +70,29 @@ class OrderProductSerializer(serializers.ModelSerializer):
 		return obj.product.name
 
 class OrderSerializer(serializers.ModelSerializer):
-	# status = OrderStatusListSerializer()
 	class Meta:
 		model = Order
 		fields = ['id', 'ordered_by', 'ordered_on', 'status', 'address']
 
-
-
-
-
-class OrderCreateUpdateSerializer(serializers.ModelSerializer):
-
-	class Meta:
-		model = Order
-		fields = ['id','ordered_on', 'product','status', 'ordered_by',]
-
 class OrderListSerializer(serializers.ModelSerializer):
-	#products = serializers.SerializerMethodField()
-
 	class Meta:
 		model = Order
 		fields = ['id', 'ordered_on', 'status', 'address']
-
-	# def get_products(self, obj):
-	# 	products = obj.orderProduct_set.all()
-	# 	return OrderProductSerializer(products, many=True).data
-
-
 
 class AddressSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Address
 		fields = ['id', 'user', 'governorate', 'area', 'block', 'street', 'building_or_house', 'floor', 'extra_directions']
 
-		
+
 class OrderDetailSerializer(serializers.ModelSerializer):
-	# products=serializers.SerializerMethodField()
 	order_product= OrderProductSerializer(many=True, read_only=True)
 	address= AddressSerializer(read_only=True)
-	# print(order_product)
 	class Meta:
 		model = Order
 		fields = ['id', 'ordered_by', 'ordered_on', 'status', 'address','order_product' ]
+
+#------------------------------------------------------#
 
 	# def get_products(self, obj):
 	# 	products = OrderProduct.objects.filter(order=obj)
@@ -158,20 +134,13 @@ class OrderDetailSerializer(serializers.ModelSerializer):
 # 		products = obj.product_set.all()
 # 		return ProductListSerializer(products, many=True).data
 
-# class OrderStatusListSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = OrderStatus
-#         fields = '__all__'
 
-# class OrderTypeListSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = OrderType
-#         fields = '__all__'
+# class OrderCreateUpdateSerializer(serializers.ModelSerializer):
 
-# class OrderNumberListSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = OrderNumber
-#         fields = '__all__'
+# 	class Meta:
+# 		model = Order
+# 		fields = ['id','ordered_on', 'product','status', 'ordered_by',]
+
 
 
 
