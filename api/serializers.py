@@ -61,6 +61,13 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
 #------------------------------------------------------#
 
+class AddressSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Address
+		fields = ['id', 'user', 'governorate', 'area', 'block', 'street', 'building_or_house', 'floor', 'extra_directions']
+
+
+
 class OrderProductSerializer(serializers.ModelSerializer):
 	name = serializers.SerializerMethodField()
 	class Meta:
@@ -70,6 +77,8 @@ class OrderProductSerializer(serializers.ModelSerializer):
 		return obj.product.name
 
 class OrderSerializer(serializers.ModelSerializer):
+	address= AddressSerializer( read_only=True)
+
 	class Meta:
 		model = Order
 		fields = ['id', 'ordered_by', 'ordered_on', 'status', 'address']
@@ -78,12 +87,6 @@ class OrderListSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Order
 		fields = ['id', 'ordered_on', 'status', 'address']
-
-class AddressSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Address
-		fields = ['id', 'user', 'governorate', 'area', 'block', 'street', 'building_or_house', 'floor', 'extra_directions']
-
 
 class OrderDetailSerializer(serializers.ModelSerializer):
 	order_product= OrderProductSerializer(many=True, read_only=True)

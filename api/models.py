@@ -49,7 +49,7 @@ class Address(models.Model):
 	('J', 'Al-Jahra'),
 	)
 
-	user = models.ForeignKey(User, default=1, related_name='address',  on_delete=models.CASCADE)
+	user = models.ForeignKey(User, related_name='address',  on_delete=models.CASCADE)
 	governorate = models.CharField(max_length=1, default=0, choices=GOVERNORATE_CHOICE)
 	area = models.CharField(max_length=120)
 	block = models.PositiveIntegerField(default=1)
@@ -75,7 +75,7 @@ class Order(models.Model):
 	#user = models.ForeignKey(Profile, default=1, related_name='order',  on_delete=models.CASCADE)
 	ordered_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orderedby")
 	ordered_on = models.DateTimeField(auto_now_add = True)
-	address = models.ForeignKey(Address,  on_delete=models.CASCADE, related_name="address")
+	address = models.ForeignKey(Address,  on_delete=models.CASCADE, related_name="address", blank=True, null=True)
 	#ordered_on = models.TextField()
 	# updated_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="updatedby")
 	# updated_on = models.DateTimeField(auto_now = True)
