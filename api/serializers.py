@@ -23,8 +23,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
 		return validated_data
 
 class ProfileSerializer(serializers.ModelSerializer):
-	email = serializers.SerializerMethodField()
-	name = serializers.SerializerMethodField()
+	# email = serializers.SerializerMethodField()
+	# name = serializers.SerializerMethodField()
 
 	class Meta:
 		model = Profile
