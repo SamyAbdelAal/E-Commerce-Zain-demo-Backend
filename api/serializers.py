@@ -70,11 +70,14 @@ class AddressSerializer(serializers.ModelSerializer):
 
 class OrderProductSerializer(serializers.ModelSerializer):
 	name = serializers.SerializerMethodField()
+	price = serializers.SerializerMethodField()
 	class Meta:
 		model = OrderProduct
-		fields = ['name','quantity']
+		fields = ['name','quantity','price']
 	def get_name(self, obj):
 		return obj.product.name
+	def get_price(self, obj):
+		return obj.product.price
 
 class OrderSerializer(serializers.ModelSerializer):
 	address= AddressSerializer( read_only=True)

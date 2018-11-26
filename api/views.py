@@ -60,14 +60,14 @@ class ProfileDeleteView(DestroyAPIView):
     serializer_class = ProfileSerializer
     lookup_field = 'id'
     lookup_url_kwarg = 'profile_id'
-    permission_classes = [IsUser, IsAdminUser]
+    permission_classes = [IsUser]
 
 
 #------------------------------------------------------#
 
 
 class OrderCreateView(APIView):
-
+	permission_classes = [IsAuthenticated]
 	def post(self, request):
 		new_order=Order.objects.create(
 			ordered_by =request.user,
@@ -95,8 +95,10 @@ class OrderCreateView(APIView):
 		# serializer.save(user=self.request.user)
 
 class OrderListView(ListAPIView):
-	queryset = Order.objects.all()
 	serializer_class = OrderListSerializer
+	permission_classes = [IsAuthenticated,IsUser]
+	def get_queryset(self):
+		return Order.objects.filter(ordered_by=self.request.user)
 
 
 class OrderDetailView(RetrieveAPIView):
@@ -104,7 +106,7 @@ class OrderDetailView(RetrieveAPIView):
 	serializer_class = OrderDetailSerializer
 	lookup_field = 'id'
 	lookup_url_kwarg = 'order_id'
-	permission_classes = [IsUser, IsAdminUser]
+	permission_classes = [IsAuthenticated,IsUser]
 
 class OrderUpdateView(RetrieveUpdateAPIView):
 	queryset = Order.objects.all()
@@ -123,9 +125,10 @@ class OrderDeleteView(DestroyAPIView):
 #------------------------------------------------------#
 
 class AddressListView(ListAPIView):
-	queryset = Address.objects.all()
 	serializer_class = AddressSerializer
-	permission_classes = [IsAuthenticated]
+	permission_classes = [IsAuthenticated, IsUser]
+	def get_queryset(self):
+		return Address.objects.filter(user=self.request.user)
 
 class AddressCreateView(CreateAPIView):
 	serializer_class = AddressSerializer
