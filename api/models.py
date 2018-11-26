@@ -8,9 +8,9 @@ class Profile(models.Model):
 	dob = models.DateField(null=True, blank=True)
 	profile_pic = models.ImageField(upload_to='profile_pic', null=True, blank=True)
 	number = models.CharField(max_length=8)
-	first_name = models.CharField(max_length=80, default=1)
-	last_name = models.CharField(max_length=80, default=1)
-	email = models.CharField(max_length=80, default=1)
+	firstname = models.CharField(max_length=80, default=1)
+	lastname = models.CharField(max_length=80, default=1)
+	theemail = models.CharField(max_length=80, default=1)
 	
 	def __str__(self):
 		return "ID:%s User:%s " % (self.id, self.user.username)
@@ -29,8 +29,8 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Product(models.Model):
 	CATEGORY_CHOICE = (
-		('F', 'FOOD'),
-		('D', 'DRINKS')
+		('FOOD', 'FOOD'),
+		('DRINKS', 'DRINKS')
 		)
 	name = models.CharField(max_length=120)
 	description = models.TextField()
@@ -44,16 +44,16 @@ class Product(models.Model):
 
 class Address(models.Model):
 	GOVERNORATE_CHOICE=(
-	('AA', 'Al Asimah'),
-	('H', 'Hawalli'),
-	('M', 'Mubarak Al-Kabeer'),
-	('A', 'Al-Ahmadi'),
-	('F', 'Farwaniya'),
-	('J', 'Al-Jahra'),
+	('Al Asimah', 'Al Asimah'),
+	('Hawalli', 'Hawalli'),
+	('Mubarak Al-Kabeer', 'Mubarak Al-Kabeer'),
+	('Al-Ahmadi', 'Al-Ahmadi'),
+	('Farwaniya', 'Farwaniya'),
+	('Al-Jahra', 'Al-Jahra'),
 	)
 
 	user = models.ForeignKey(User, related_name='address',  on_delete=models.CASCADE)
-	governorate = models.CharField(max_length=1, default=0, choices=GOVERNORATE_CHOICE)
+	governorate = models.CharField(max_length=20, default=0, choices=GOVERNORATE_CHOICE)
 	area = models.CharField(max_length=120)
 	block = models.PositiveIntegerField(default=1)
 	street = models.CharField(max_length=120)
@@ -68,13 +68,13 @@ class Address(models.Model):
 
 class Order(models.Model):
 	STATUS_CHOICE=(
-	('O', 'ORDERED'),
-	('P', 'PACKED'),
-	('S', 'SHIPPED'),
-	('D', 'DELIVERED')
+	('ORDERED', 'ORDERED'),
+	('PACKED', 'PACKED'),
+	('SHIPPED', 'SHIPPED'),
+	('DELIVERED', 'DELIVERED')
 	)
 	# price = models.FloatField(default=0)
-	status = models.CharField(max_length=1, default=0, choices=STATUS_CHOICE)
+	status = models.CharField(max_length=20, default=0, choices=STATUS_CHOICE)
 	#user = models.ForeignKey(Profile, default=1, related_name='order',  on_delete=models.CASCADE)
 	ordered_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orderedby")
 	ordered_on = models.DateTimeField(auto_now_add = True)
