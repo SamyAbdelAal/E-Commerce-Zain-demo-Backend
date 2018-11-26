@@ -8,9 +8,9 @@ class Profile(models.Model):
 	dob = models.DateField(null=True, blank=True)
 	profile_pic = models.ImageField(upload_to='profile_pic', null=True, blank=True)
 	number = models.CharField(max_length=8)
-	first_name = models.CharField(max_length=80)
-	last_name = models.CharField(max_length=80)
-	email = models.CharField(max_length=80)
+	first_name = models.CharField(max_length=80, default=1)
+	last_name = models.CharField(max_length=80, default=1)
+	email = models.CharField(max_length=80, default=1)
 	
 	def __str__(self):
 		return "ID:%s User:%s " % (self.id, self.user.username)
