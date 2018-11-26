@@ -28,13 +28,13 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Profile
-		fields = ['name', 'dob', 'email', 'profile_pic', 'number']
+		fields = ['dob', 'firstname', 'lastname', 'email', 'profile_pic', 'number']
 
-	def get_email(self, obj):
-		return (obj.user.email)
+	# def get_email(self, obj):
+	# 	return (obj.user.email)
 
-	def get_name(self, obj):
-		return "%s %s"%(obj.user.first_name, obj.user.last_name)
+	# def get_name(self, obj):
+	# 	return "%s %s"%(obj.user.first_name, obj.user.last_name)
 		
 #------------------------------------------------------#
 

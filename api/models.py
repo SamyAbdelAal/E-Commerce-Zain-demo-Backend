@@ -10,7 +10,7 @@ class Profile(models.Model):
 	number = models.CharField(max_length=8)
 	firstname = models.CharField(max_length=80, default=1)
 	lastname = models.CharField(max_length=80, default=1)
-	theemail = models.CharField(max_length=80, default=1)
+	email = models.CharField(max_length=80, default=1)
 	
 	def __str__(self):
 		return "ID:%s User:%s " % (self.id, self.user.username)
