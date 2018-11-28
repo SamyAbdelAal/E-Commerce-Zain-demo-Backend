@@ -46,21 +46,21 @@ class ProfileView(RetrieveAPIView):
 	serializer_class = ProfileSerializer
 	lookup_field = 'id'
 	lookup_url_kwarg = 'user_id'
-	permission_classes = [IsUser, IsAdminUser]
+	permission_classes = [IsAuthenticated,IsUser ]
 
 class ProfileUpdateView(RetrieveUpdateAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-    lookup_field = 'id'
-    lookup_url_kwarg = 'profile_id'
-    permission_classes = [IsUser, IsAdminUser]
+	queryset = Profile.objects.all()
+	serializer_class = ProfileSerializer
+	lookup_field = 'id'
+	lookup_url_kwarg = 'profile_id'
+	permission_classes = [IsAuthenticated,IsUser ]
 
 class ProfileDeleteView(DestroyAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
-    lookup_field = 'id'
-    lookup_url_kwarg = 'profile_id'
-    permission_classes = [IsUser]
+	queryset = Profile.objects.all()
+	serializer_class = ProfileSerializer
+	lookup_field = 'id'
+	lookup_url_kwarg = 'profile_id'
+	permission_classes = [IsAuthenticated,IsUser]
 
 
 #------------------------------------------------------#
@@ -79,7 +79,7 @@ class OrderCreateView(APIView):
 		for product in products:
 			the_product = Product.objects.get(id=product["id"])
 			new_order_product=OrderProduct(product=the_product, quantity=product["quantity"])
-			the_product.quantity=the_product.quantity-new_order_product.quantity
+			the_product.quantity=the_product.quantity-int(new_order_product.quantity)
 			print(the_product.quantity)
 			the_product.save()
 			new_order_product.order=new_order
@@ -113,7 +113,7 @@ class OrderUpdateView(RetrieveUpdateAPIView):
 	serializer_class = OrderDetailSerializer
 	lookup_field = 'id'
 	lookup_url_kwarg = 'order_id'
-	permission_classes = [IsAdminUser]
+	permission_classes = [IsAuthenticated,IsUser]
 
 class OrderDeleteView(DestroyAPIView):
 	queryset = Order.objects.all()
@@ -134,7 +134,7 @@ class AddressCreateView(CreateAPIView):
 	serializer_class = AddressSerializer
 	permission_classes = [IsAuthenticated]
 
-	def perform_create(self,serializer):
+	def perform_create(self, serializer):
 		serializer.save(user=self.request.user)
 
 #------------------------------------------------------#commented

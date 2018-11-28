@@ -74,7 +74,7 @@ class Order(models.Model):
 	('DELIVERED', 'DELIVERED')
 	)
 	# price = models.FloatField(default=0)
-	status = models.CharField(max_length=20, default=0, choices=STATUS_CHOICE)
+	status = models.CharField(max_length=20, default='ORDERED', choices=STATUS_CHOICE)
 	#user = models.ForeignKey(Profile, default=1, related_name='order',  on_delete=models.CASCADE)
 	ordered_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orderedby")
 	ordered_on = models.DateTimeField(auto_now_add = True)
