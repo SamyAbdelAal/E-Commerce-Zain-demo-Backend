@@ -62,6 +62,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 #------------------------------------------------------#
 
 class AddressSerializer(serializers.ModelSerializer):
+	user = serializers.PrimaryKeyRelatedField(read_only=True)
 	class Meta:
 		model = Address
 		fields = ['id', 'user', 'governorate', 'area', 'block', 'street', 'building_or_house', 'floor', 'extra_directions']
