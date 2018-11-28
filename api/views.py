@@ -106,14 +106,14 @@ class OrderDetailView(RetrieveAPIView):
 	serializer_class = OrderDetailSerializer
 	lookup_field = 'id'
 	lookup_url_kwarg = 'order_id'
-	permission_classes = [IsAuthenticated,IsUser]
+	permission_classes = [IsAuthenticated,IsUserOrder]
 
 class OrderUpdateView(RetrieveUpdateAPIView):
 	queryset = Order.objects.all()
 	serializer_class = OrderDetailSerializer
 	lookup_field = 'id'
 	lookup_url_kwarg = 'order_id'
-	permission_classes = [IsAuthenticated,IsUser]
+	permission_classes = [IsAuthenticated,IsUserOrder]
 
 class OrderDeleteView(DestroyAPIView):
 	queryset = Order.objects.all()
