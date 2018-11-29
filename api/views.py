@@ -41,12 +41,14 @@ class ProductDetailView(RetrieveAPIView):
 class ProfileCreateAPIView(CreateAPIView):
 	serializer_class = ProfileSerializer
 
-class ProfileView(RetrieveAPIView):
-	queryset = Profile.objects.all()
-	serializer_class = ProfileSerializer
-	lookup_field = 'id'
-	lookup_url_kwarg = 'user_id'
+class ProfileView(APIView):
+	
+
 	permission_classes = [IsAuthenticated,IsUser ]
+	def get(self, request):
+		profile = request.user.profile
+		return Response(ProfileSerializer(profile).data)
+
 
 class ProfileUpdateView(RetrieveUpdateAPIView):
 	queryset = Profile.objects.all()

@@ -5,7 +5,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 urlpatterns = [
     path('login/', obtain_jwt_token, name='login'),
     path('register/', UserCreateAPIView.as_view(), name='register'),
-	path('profile/<int:user_id>/', ProfileView.as_view(), name='profile'),
+	path('profile/', ProfileView.as_view(), name='profile'),
 	path('profile/<int:profile_id>/update/', ProfileUpdateView.as_view(), name='profile-update'),
     path('product/list/', ProductListView.as_view(), name='product-list'),
     path('product/<int:product_id>/detail/', ProductDetailView.as_view(), name='product-detail'),
