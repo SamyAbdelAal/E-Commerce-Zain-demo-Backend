@@ -9,7 +9,7 @@ class IsUser(BasePermission):
             return True
         return False
 class IsUserOrder(BasePermission):
-    message = "This is not your profile"
+    message = "This is not your order"
 
     def has_object_permission(self, request, view, obj):
         if request.user.is_staff or obj.ordered_by == request.user:

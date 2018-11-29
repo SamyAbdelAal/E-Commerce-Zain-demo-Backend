@@ -6,7 +6,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 	password = serializers.CharField(write_only=True)
 	class Meta:
 		model = User
-		fields = ['username', 'password',]
+		fields = ['username', 'password']
 
 	def create(self, validated_data):
 		new_user=User.objects.create(
@@ -36,7 +36,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 	# def get_name(self, obj):
 	# 	return "%s %s"%(obj.user.first_name, obj.user.last_name)
 		
-#------------------------------------------------------#
+#------------------------------------------------------#Product
 
 class ProductListSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -59,7 +59,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 		'img', 'quantity'
 			]
 
-#------------------------------------------------------#
+#------------------------------------------------------#Address
 
 class AddressSerializer(serializers.ModelSerializer):
 	user = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -67,7 +67,7 @@ class AddressSerializer(serializers.ModelSerializer):
 		model = Address
 		fields = ['id', 'user', 'governorate', 'area', 'block', 'street', 'building_or_house', 'floor', 'extra_directions']
 
-
+#------------------------------------------------------#Order
 
 class OrderProductSerializer(serializers.ModelSerializer):
 	name = serializers.SerializerMethodField()

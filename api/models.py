@@ -73,16 +73,11 @@ class Order(models.Model):
 	('SHIPPED', 'SHIPPED'),
 	('DELIVERED', 'DELIVERED')
 	)
-	# price = models.FloatField(default=0)
+	
 	status = models.CharField(max_length=20, default='ORDERED', choices=STATUS_CHOICE)
-	#user = models.ForeignKey(Profile, default=1, related_name='order',  on_delete=models.CASCADE)
 	ordered_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orderedby")
 	ordered_on = models.DateTimeField(auto_now_add = True)
 	address = models.ForeignKey(Address,  on_delete=models.CASCADE, related_name="address", blank=True, null=True)
-	#ordered_on = models.TextField()
-	# updated_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="updatedby")
-	# updated_on = models.DateTimeField(auto_now = True)
-	# order_number = models.ManyToManyField(OrderNumber, blank=True)
 	def __str__(self):
 		return self.ordered_by.username
 
