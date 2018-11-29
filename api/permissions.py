@@ -8,6 +8,8 @@ class IsUser(BasePermission):
         if request.user.is_staff or obj.user == request.user:
             return True
         return False
+
+
 class IsUserOrder(BasePermission):
     message = "This is not your order"
 
