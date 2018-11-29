@@ -42,7 +42,8 @@ class ProfileCreateAPIView(CreateAPIView):
 	serializer_class = ProfileSerializer
 
 class ProfileView(APIView):
-	permission_classes = [IsAuthenticated,IsUser ]
+	permission_classes = [IsAuthenticated, ]
+	
 	def get(self, request):
 		profile = request.user.profile
 		return Response(ProfileSerializer(profile).data)
@@ -64,7 +65,7 @@ class OrderCreateView(APIView):
 	def post(self, request):
 		new_order=Order.objects.create(
 			ordered_by =request.user,
-			ordered_on= datetime.now()
+			# ordered_on= datetime.now()
 		)
 		
 		products=request.data["cart"]
@@ -72,7 +73,7 @@ class OrderCreateView(APIView):
 		for product in products:
 			the_product = Product.objects.get(id=product["id"])
 			new_order_product=OrderProduct(product=the_product, quantity=product["quantity"])
-			the_product.quantity=the_product.quantity-int(new_order_product.quantity)
+			the_product.quantity-=int(new_order_product.quantity)
 			print(the_product.quantity)
 			the_product.save()
 			new_order_product.order=new_order
