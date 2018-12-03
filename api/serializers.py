@@ -66,7 +66,7 @@ class AddressSerializer(serializers.ModelSerializer):
 	user = serializers.PrimaryKeyRelatedField(read_only=True)
 	class Meta:
 		model = Address
-		exclude = ['user',]
+		fields = '__all__'
 
 #------------------------------------------------------#Order
 
