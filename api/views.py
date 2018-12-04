@@ -43,7 +43,6 @@ class ProfileCreateAPIView(CreateAPIView):
 
 class ProfileView(APIView):
 	permission_classes = [IsAuthenticated, ]
-	
 	def get(self, request):
 		profile = request.user.profile
 		return Response(ProfileSerializer(profile).data)
@@ -67,7 +66,7 @@ class OrderCreateView(APIView):
 			ordered_by =request.user,
 			# ordered_on= datetime.now()
 		)
-		
+
 		products=request.data["cart"]
 		print(request.data)
 		for product in products:
@@ -118,6 +117,12 @@ class AddressCreateView(CreateAPIView):
 		serializer.save(user=self.request.user)
 
 
+class AddressUpdateView(RetrieveUpdateAPIView):
+	queryset = Address.objects.all()
+	serializer_class = AddressSerializer
+	lookup_field = 'id'
+	lookup_url_kwarg = 'address_id'
+	permission_classes = [IsAuthenticated,IsUser ]
 
 #------------------------------------------------------#
 
@@ -141,6 +146,7 @@ class AddressCreateView(CreateAPIView):
 # 	lookup_field = 'id'
 # 	lookup_url_kwarg = 'profile_id'
 # 	permission_classes = [IsAuthenticated,IsUser]
+
 #------------------------------------------------------#commented
 
 # class OrderDeleteView(DestroyAPIView):
@@ -158,13 +164,3 @@ class AddressCreateView(CreateAPIView):
 # 	serializer_class = ProductListSerializer
 # 	lookup_field = 'id'
 # 	lookup_url_kwarg = 'product_id'
-
-
-
-
-
-
-
-
-
-

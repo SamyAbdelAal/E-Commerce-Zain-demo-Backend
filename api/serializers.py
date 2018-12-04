@@ -17,7 +17,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 			#last_name = validated_data['last_name'],
 
 		)
-		
+
 		new_user.set_password(validated_data['password'])
 		new_user.save()
 		return validated_data
@@ -35,7 +35,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 	# def get_name(self, obj):
 	# 	return "%s %s"%(obj.user.first_name, obj.user.last_name)
-		
+
 #------------------------------------------------------#Product
 
 class ProductListSerializer(serializers.ModelSerializer):
@@ -47,6 +47,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 		'price',
 		'category',
 		'img',
+		"category"
 			]
 
 class ProductDetailSerializer(serializers.ModelSerializer):
@@ -107,7 +108,7 @@ class OrderDetailSerializer(serializers.ModelSerializer):
 	# 	# print(products)
 	# 	product_list=[]
 	# 	for product in products:
-			
+
 	# 		product_list.append(OrderProductSerializer(product, many=True).data)
 	# 	# return OrderProductSerializer(products, many=True).data
 	# 	print(product_list)
@@ -148,7 +149,3 @@ class OrderDetailSerializer(serializers.ModelSerializer):
 # 	class Meta:
 # 		model = Order
 # 		fields = ['id','ordered_on', 'product','status', 'ordered_by',]
-
-
-
-

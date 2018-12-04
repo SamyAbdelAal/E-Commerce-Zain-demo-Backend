@@ -16,5 +16,6 @@ urlpatterns = [
     # path('order/<int:order_id>/update/', OrderUpdateView.as_view(), name='order-update'),
     path('address/create/', AddressCreateView.as_view(), name='address'),
     path('address/list/', AddressListView.as_view(), name='address_list'),
+    path('address/<int:address_id>/update/', AddressUpdateView.as_view(), name='address-update'),
 
 ]
