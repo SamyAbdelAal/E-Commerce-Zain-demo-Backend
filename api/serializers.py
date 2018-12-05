@@ -100,7 +100,7 @@ class OrderDetailSerializer(serializers.ModelSerializer):
 	address= AddressSerializer(read_only=True)
 	class Meta:
 		model = Order
-		fields = ['id', 'ordered_by', 'ordered_on', 'status', 'address','order_product' ]
+		fields = ['id', 'ordered_by', 'ordered_on', 'status', 'address','order_product' ,'price']
 
 #------------------------------------------------------#
 
