@@ -6,8 +6,7 @@ from django.dispatch import receiver
 class Profile(models.Model):
 	user = models.OneToOneField(User, default=1, on_delete=models.CASCADE)
 	dob = models.DateField(null=True, blank=True)
-	profile_pic = models.ImageField(null=True, blank=True)
-	number = models.CharField(max_length=8)
+	number = models.CharField(max_length=8,null=True, blank=True)
 	firstname = models.CharField(max_length=80, default=1)
 	lastname = models.CharField(max_length=80, default=1)
 	email = models.CharField(max_length=80, default=1)
@@ -29,8 +28,8 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Product(models.Model):
 	CATEGORY_CHOICE = (
-		('FOOD', 'FOOD'),
-		('DRINKS', 'DRINKS')
+		('MOBILES', 'MOBILES'),
+		('TABLETS', 'TABLETS')
 		)
 	name = models.CharField(max_length=120)
 	description = models.TextField()
@@ -73,16 +72,13 @@ class Order(models.Model):
 	('SHIPPED', 'SHIPPED'),
 	('DELIVERED', 'DELIVERED')
 	)
-	# price = models.FloatField(default=0)
+	price = models.FloatField(default=0)
 	status = models.CharField(max_length=20, default='ORDERED', choices=STATUS_CHOICE)
-	#user = models.ForeignKey(Profile, default=1, related_name='order',  on_delete=models.CASCADE)
+
 	ordered_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orderedby")
 	ordered_on = models.DateTimeField(auto_now_add = True)
 	address = models.ForeignKey(Address,  on_delete=models.CASCADE, related_name="address", blank=True, null=True)
-	#ordered_on = models.TextField()
-	# updated_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="updatedby")
-	# updated_on = models.DateTimeField(auto_now = True)
-	# order_number = models.ManyToManyField(OrderNumber, blank=True)
+
 	def __str__(self):
 		return self.ordered_by.username
 

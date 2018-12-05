@@ -89,6 +89,8 @@ class OrderCreateView(APIView):
 
 		address=request.data["address"]
 		the_address=Address.objects.get(id=int(address))
+		total_price = request.data["totalPrice"]
+		new_order.price = total_price
 		new_order.address= the_address
 
 		new_order.save()
