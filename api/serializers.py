@@ -28,7 +28,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Profile
-		fields = [ 'firstname', 'lastname', 'dob', 'email', 'number', 'profile_pic']
+		fields = [ 'firstname', 'lastname', 'dob', 'email', 'number']
 
 	# def get_email(self, obj):
 	# 	return (obj.user.email)
