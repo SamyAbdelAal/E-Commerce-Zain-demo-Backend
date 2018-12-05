@@ -46,7 +46,8 @@ class ProductListSerializer(serializers.ModelSerializer):
 		'description',
 		'price',
 		'category',
-		'img',
+		'img1',
+		'img2',
 		"category"
 			]
 
@@ -58,7 +59,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 		'price',
 		'description',
 		'category',
-		'img', 'quantity'
+		'img1','img2','img3','img4','img5', 'quantity'
 			]
 
 #------------------------------------------------------#Address
