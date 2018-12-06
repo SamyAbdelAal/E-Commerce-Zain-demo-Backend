@@ -48,7 +48,8 @@ class ProductListSerializer(serializers.ModelSerializer):
 		'category',
 		'img1',
 		'img2',
-		"category"
+		"category",
+		'quantity'
 			]
 
 class ProductDetailSerializer(serializers.ModelSerializer):
