@@ -33,8 +33,10 @@ class ProductListSerializer(serializers.ModelSerializer):
 		'description',
 		'price',
 		'category',
-		'img',
-		"category"
+		'img1',
+		'img2',
+		"category",
+		'quantity'
 			]
 
 class ProductDetailSerializer(serializers.ModelSerializer):
@@ -45,7 +47,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 		'price',
 		'description',
 		'category',
-		'img', 'quantity'
+		'img1','img2','img3','img4','img5', 'quantity'
 			]
 
 #------------------------------------------------------#Address
@@ -88,4 +90,5 @@ class OrderDetailSerializer(serializers.ModelSerializer):
 		model = Order
 		fields = ['id', 'ordered_by', 'ordered_on', 'status', 'address','order_product','price' ]
 
-#------------------------------------------------------#
+
+

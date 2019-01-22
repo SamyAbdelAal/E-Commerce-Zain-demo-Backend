@@ -34,7 +34,11 @@ class Product(models.Model):
 	name = models.CharField(max_length=120)
 	description = models.TextField()
 	price = models.DecimalField(max_digits=10, decimal_places=3)
-	img = models.ImageField()
+	img1 = models.ImageField()
+	img2 = models.ImageField(blank=True, null=True)
+	img3 = models.ImageField(blank=True, null=True)
+	img4 = models.ImageField(blank=True, null=True)
+	img5 = models.ImageField(blank=True, null=True)
 	quantity = models.PositiveIntegerField(default=0)
 	category = models.CharField(max_length=20, default=0, choices=CATEGORY_CHOICE)
 
