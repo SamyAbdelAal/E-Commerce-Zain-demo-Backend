@@ -50,7 +50,6 @@ class Address(models.Model):
 	('Farwaniya', 'Farwaniya'),
 	('Al-Jahra', 'Al-Jahra'),
 	)
-
 	user = models.ForeignKey(User, related_name='address',  on_delete=models.CASCADE)
 	governorate = models.CharField(max_length=20, default=0, choices=GOVERNORATE_CHOICE)
 	area = models.CharField(max_length=120)
@@ -75,7 +74,6 @@ class Order(models.Model):
 
 	price = models.FloatField(default=0)
 	status = models.CharField(max_length=20, default='ORDERED', choices=STATUS_CHOICE)
-
 	ordered_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orderedby")
 	ordered_on = models.DateTimeField(auto_now_add = True)
 	address = models.ForeignKey(Address,  on_delete=models.CASCADE, related_name="address", blank=True, null=True)
@@ -95,21 +93,3 @@ class OrderProduct(models.Model):
 
 
 #------------------------------------------------------#
-
-# class OrderStatus(models.Model):
-# 	name = models.CharField(max_length=200)
-
-# 	def __str__(self):
-# 		return self.name
-
-# class OrderType(models.Model):
-# 	name = models.CharField(max_length=200)
-
-# 	def __str__(self):
-# 		return self.name
-
-# class OrderNumber(models.Model):
-# 	number = models.IntegerField()
-
-# 	def __str__(self):
-# 		return self.number
